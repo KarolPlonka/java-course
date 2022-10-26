@@ -1,9 +1,10 @@
 import java.awt.Rectangle;
 import java.io.File;
-public class App
-{
-   public static void main(String[] args)    
-   {                                        
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class rectangle extends Rectangle {
+    public static void main(String[] args) throws Exception {
         Rectangle obj1 = new Rectangle(0,0,4,3);    
         Rectangle obj2 = new Rectangle(1, 1, 4, 3);
         System.out.println("Prostokat 1: " + obj1);
@@ -33,6 +34,8 @@ public class App
 
         System.out.println("Czy prostokąt 7 przecina prostokąt 8? "+ obj7.intersects(obj8));
 
-
-   }                                          
+        File file = new File("rectangle.txt");
+        FileWriter fileWrite = new FileWriter(file);
+        fileWrite.write("Prostokat 1: " + obj1);
+    }
 }
