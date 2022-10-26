@@ -1,5 +1,7 @@
 import java.security.*;
 import javax.crypto.*;
+import java.io.*;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -8,11 +10,14 @@ import java.nio.file.Paths;
 // write rsa class
 public class App {
     public static void main(String[] args) throws Exception {
+
+        // taking input from user and saving it into notes.txt file
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input_from_user = br.readLine();
         PrintWriter notes = new PrintWriter("notes.txt", "UTF-8");
-        // save string from user to file
-        notes.println("Here we have some notes!"); // TODO - write text input taken from user into txt file
+        notes.println(input_from_user);
         notes.close();
-        
+
         // generate key pair
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(2048);
