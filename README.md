@@ -1,6 +1,6 @@
 <h3 align="center">Solutions</h3>
 
-<h3 align="left">Connect with me:</h3>
+<h3 align="left">Solutions for few tasks </h3>
 <p align="left">
 </p>
 
