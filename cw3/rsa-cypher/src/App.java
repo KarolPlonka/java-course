@@ -35,8 +35,10 @@ public class App {
         // encrypt the text read from file
         byte[] input = Files.readAllBytes(Paths.get("notes.txt"));
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] cipherText = cipher.doFinal(input);
         
+        byte[] cipherText = cipher.doFinal(input);
+        Files.write(Paths.get("notes_encrypted.txt"), cipherText);
+
         // decrypt the text from file
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] plainText = cipher.doFinal(cipherText);
