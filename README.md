@@ -16,5 +16,3 @@
 </ol>
 <h3 align="left">Languages and Tools:</h3>
 <p align="left"> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> </p>
-
-// https://prod.liveshare.vsengsaas.visualstudio.com/join?738E2B6036640F0253500816FB36A8AB1F8A
