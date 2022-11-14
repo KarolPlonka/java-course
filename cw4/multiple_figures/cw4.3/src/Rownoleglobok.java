@@ -11,7 +11,7 @@ class Rownoleglobok extends Figura
       this.alfa = alfa;
    }                                          
  
-   double pole() {return a * b * Math.sin(alfa);}                            
+   double pole() {return a * b * Math.sin(Math.toRadians(alfa));}
  
    double obwod() { return 2*a+2*b;}                                
  

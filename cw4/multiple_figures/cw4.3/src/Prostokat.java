@@ -1,26 +1,21 @@
-class Prostokat extends Figura
-{
-   double dlugosc;
-   double szerokosc;
- 
-   Prostokat(double dlugosc,double szerokosc) 
-   {                                          
-      this.dlugosc=dlugosc;                   
-      this.szerokosc=szerokosc;               
-   }                                          
- 
-   double pole()                
-   {                            
-      return dlugosc*szerokosc; 
-   }                            
- 
-   double obwod()                   
-   {                                
-      return 2*dlugosc+2*szerokosc; 
-   }                                
- 
-   public String toString()                                
-   {                                                       
-      return "prostokat o wym. "+dlugosc+" na "+szerokosc; 
-   }                                                       
+public class Prostokat extends Figura{
+    double bok1;
+    double bok2;
+
+    Prostokat(double bok1, double bok2) {
+        this.bok1 = bok1;
+        this.bok2 = bok2;
+    }
+
+    double pole() {
+        return bok1 * bok2;
+    }
+
+    double obwod() {
+        return 2 * bok1 + 2 * bok2;
+    }
+
+    public String toString() {
+        return "prostokat o bokach " + bok1 + " i " + bok2;
+    }
 }
