@@ -39,7 +39,6 @@ public class App
       catch(IOException e){throw new RuntimeException("File not found");}
       try{person4.close();}
       catch(IOException e){throw new RuntimeException("Cannot close file");}
-      
 
       Dokument[] bazaDanych = {
                new Dowodosobisty(person1),
@@ -48,7 +47,6 @@ public class App
                new Paszport(person4)
       }; 
 
-
       Dokument z;                                                                
       String wzorzec = "Kowalski";
 
@@ -56,6 +54,6 @@ public class App
       {                                                                          
          z = bazaDanych[i];                                                        
          if(z.czyPasuje(wzorzec)) System.out.println("znaleziono: " + z);       
-      }                                                                          
+      }                                                                 
    }                                                                             
 }
