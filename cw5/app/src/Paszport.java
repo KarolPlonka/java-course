@@ -1,5 +1,5 @@
 import java.io.BufferedReader;
-//import java.io.IOException;
+import java.io.IOException;
 
 public class Paszport extends Dokument{
     
@@ -8,6 +8,16 @@ public class Paszport extends Dokument{
     public Paszport (BufferedReader br)
     {
         this.wlasciciel=new Osoba(br);
+
+        try                                                   
+        {
+          System.out.print("ID: ");                 
+          this.id = Integer.parseInt(br.readLine()); 
+        }      
+                                                       
+        catch(IOException e){
+          throw new RuntimeException("Nie udało się stworzyć nowego dowodu osobistego");
+        } 
     }
 
     public Paszport(String imie, String nazwisko, int rok_urodzenia, int id)

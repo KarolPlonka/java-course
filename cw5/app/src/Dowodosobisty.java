@@ -7,19 +7,18 @@ public class Dowodosobisty extends Dokument {
     
     
     public Dowodosobisty (BufferedReader br)
-    {                                                   
+    {            
+      this.wlasciciel=new Osoba(br);
+
       try                                                   
       {
-        this.wlasciciel=new Osoba(br);
-        
         System.out.print("ID: ");                 
         this.id = Integer.parseInt(br.readLine()); 
-      }                                                     
+      }      
+                                                     
       catch(IOException e){
         throw new RuntimeException("Nie udało się stworzyć nowego dowodu osobistego");
       } 
-
-        
     }
 
     public boolean czyPasuje(String wzorzec){
