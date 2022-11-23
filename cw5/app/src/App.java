@@ -17,25 +17,25 @@ public class App
       //p1 = ""
 
       BufferedReader person1;
-      try{person1 = new BufferedReader(new FileReader("person1.txt"));}
+      try{person1 = new BufferedReader(new FileReader("cw5/app/src/person1.txt"));}
       catch(IOException e){System.out.println("Kurwa Error: " + e); return;}
       try{person1.close();}
       catch(IOException e){throw new RuntimeException("Cannot close file");}
       
       BufferedReader person2;
-      try{person2 = new BufferedReader(new FileReader("person2.txt")); }
+      try{person2 = new BufferedReader(new FileReader("cw5/app/src/person2.txt")); }
       catch(IOException e){throw new RuntimeException("File not found");}
       try{person2.close();}
       catch(IOException e){throw new RuntimeException("Cannot close file");}
 
       BufferedReader person3;
-      try{person3 = new BufferedReader(new FileReader("person3.txt")); }
+      try{person3 = new BufferedReader(new FileReader("cw5/app/src/person3.txt")); }
       catch(IOException e){throw new RuntimeException("File not found");}
       try{person3.close();}
       catch(IOException e){throw new RuntimeException("Cannot close file");}
 
       BufferedReader person4;
-      try{person4 = new BufferedReader(new FileReader("person4.txt")); }
+      try{person4 = new BufferedReader(new FileReader("cw5/app/src/person4.txt")); }
       catch(IOException e){throw new RuntimeException("File not found");}
       try{person4.close();}
       catch(IOException e){throw new RuntimeException("Cannot close file");}
