@@ -18,17 +18,17 @@ public class Server
         System.out.println("There is a connection: " + socket);
 
         // create a stream of data downloaded from the network socket
-        BufferedReader inp;
-        inp=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedReader input;
+        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         //communication - reading data from the stream
         String str;
-        while ((str = inp.readLine()) != null) {
+        while ((str = input.readLine()) != null) {
             System.out.println("<Received:> " + str);
         }
 
         //closing the connection
-        inp.close();
+        input.close();
         socket.close();
         server.close();
     }
