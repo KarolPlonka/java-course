@@ -1,40 +1,44 @@
 import java.io.*;
 import java.net.*;
 
-// Class representing the thread for receiving messages
-class Receive extends Thread
+class ReceiverThread extends Thread
 {
-    Socket socket;
+    Socket sock;
     BufferedReader sockReader;
 
-
-    public Receive(Socket sock) throws IOException
+    public ReceiverThread(Socket sock) throws IOException
     {
-        this.socket = sock;
+        this.sock = sock;
         this.sockReader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
     }
 
     public void run()
     {
-        // Loop until the "over" or "END" message is received
-        String message = "";
-        while (!message.equalsIgnoreCase("over") && !message.equalsIgnoreCase("END"))
+        try
         {
-            // Read the next message from the socket
-            try
+            // receiving messages loop
+            String str;
+            while (true)
             {
-                message = sockReader.readLine();
-                System.out.println("<Received:> " + message);
-            }
-            catch (IOException e)
-            {
-                System.out.println("Error reading from socket: " + e);
-            }
-        }
+                str = sockReader.readLine();
 
-        // Print the "End of connection" message and exit
-        System.out.println("End of connection");
-        System.exit(0);
+                // check if the "over" or "END" message was received
+                if (str.equalsIgnoreCase("over") || str.equalsIgnoreCase("end"))
+                {
+                    System.out.println("Received end message: " + str);
+                    break;
+                }
+
+                System.out.println("Received: " + str);
+            }
+
+            // end of communication
+            System.out.println("End of connection");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Connection has been interrupted");
+        }
     }
 }
 
@@ -44,36 +48,49 @@ public class Server
 
     public static void main(String args[]) throws IOException
     {
-        try (// Create a server socket
-        ServerSocket serv = new ServerSocket(PORT)) {
-            // Wait for connection and create network socket
-            System.out.println("Listening: " + serv);
-            Socket socket = serv.accept();
-            System.out.println("There is a connection: " + socket);
+        // creating a server socket
+        ServerSocket serv;
+        serv = new ServerSocket(PORT);
 
-            // Create a receiving thread
-            new Receive(socket).start();
+        // waiting for a connection and creating a network socket
+        System.out.println("Listening: " + serv);
+        Socket sock;
+        sock = serv.accept();
+        System.out.println("Connection established: " + sock);
 
-            // Create streams of data taken from the keyboard and delivered to the socket
-            BufferedReader keys = new BufferedReader(new InputStreamReader(System.in));
-            PrintWriter outp = new PrintWriter(socket.getOutputStream());
+        // creating a receiver thread
+        new ReceiverThread(sock).start();
 
-            // Loop until the "over" or "END" message is sent
-            String message = "";
-            while (!message.equalsIgnoreCase("over") && !message.equalsIgnoreCase("END"))
+        // sending messages loop
+        BufferedReader input;
+        input = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter output;
+        output = new PrintWriter(sock.getOutputStream());
+        String str;
+        while (true)
+        {
+            System.out.print("<Sending:> ");
+            str = input.readLine();
+
+            // check if the "over" or "END" message was sent
+            if (str.equalsIgnoreCase("over") || str.equalsIgnoreCase("end"))
             {
-                // Read the next message from the keyboard
-                message = keys.readLine();
-
-                // Send the message to the socket
-                outp.println(message);
-                outp.flush();
+                output.println(str);
+                output.flush();
+                break;
             }
+
+            output.println(str);
+            output.flush();
         }
 
-        // Print the "End of connection" message and exit
+        // end of communication
         System.out.println("End of connection");
-        System.exit(0);
 
+        // closing the connection
+        input.close();
+        output.close();
+        sock.close();
+        serv.close();
     }
 }
