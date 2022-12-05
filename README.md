@@ -20,8 +20,7 @@
     <ol>
       <li>Polymorphism - continuation (2 tasks) </li>
       <li>Streams, sockets and threads I - instant messenger</li>
-      <li>Streams, sockets and threads II - http server</li>
-      
+      <li>Streams, sockets and threads II - http server
     </ol>
   </li>
 </ol>
