@@ -4,26 +4,32 @@ import java.net.*;
 public class Server
 {
     public static final int PORT=50007;
-    public static final String HOST = "127.0.0.1";
 
     public static void main(String args[]) throws IOException
     {
-        // Create a server socket
-        ServerSocket serv = new ServerSocket(PORT);
+        // create a server socket
+        ServerSocket server;
+        server = new ServerSocket(PORT);
 
-        // Wait for connection and create network socket
-        System.out.println("Listening: " + serv);
-        Socket socket = serv.accept();
+        //wait for connection and create network socket
+        System.out.println("Listening: " + server);
+        Socket socket;
+        socket = server.accept();
         System.out.println("There is a connection: " + socket);
 
-        // Create a receiving thread
-        new Receive(socket).start();
+        // create a stream of data downloaded from the network socket
+        BufferedReader inp;
+        inp=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        // Create a sending thread
-        new Send(socket).start();
+        //communication - reading data from the stream
+        String str;
+        while ((str = inp.readLine()) != null) {
+            System.out.println("<Received:> " + str);
+        }
 
-        // Closing the connection
-        serv.close();
+        //closing the connection
+        inp.close();
         socket.close();
+        server.close();
     }
 }
