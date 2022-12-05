@@ -1,0 +1,7 @@
+To test the implementation of the instant messenger, you can compile and run the Server and Client classes in separate terminal windows. In the terminal running the Server class, the server will print messages indicating that it is listening for connections and that a connection has been established with a client. In the terminal running the Client class, the client will print a message indicating that a connection has been established with the server.
+
+Once the connection is established, you can start sending messages back and forth between the server and the client. In the terminal running the Server class, messages received from the client will be printed to the console. In the terminal running the Client class, messages entered by the user will be sent to the server.
+
+To end the connection, either party can send an "over" or "END" message. This will cause both the server and the client to print the message "End of connection" and exit.
+
+Here is an example interaction between the server and the client:
