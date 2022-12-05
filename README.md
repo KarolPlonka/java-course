@@ -12,6 +12,17 @@
       <li>Money-exchange simple algorithm</li>
       <li>RSA - encrypting and decrypting text from file
     </ol>
+  <li> Fourth task </li>
+    <ol>
+      <li>Polymorphism tasks on mathematics figures</li>
+    </ol>
+  <li> Fifth task </li>
+    <ol>
+      <li>Polymorphism - continuation (2 tasks) </li>
+      <li>Streams, sockets and threads I - instant messenger</li>
+      <li>Streams, sockets and threads II - http server</li>
+      
+    </ol>
   </li>
 </ol>
 <h3 align="left">Languages and Tools:</h3>
