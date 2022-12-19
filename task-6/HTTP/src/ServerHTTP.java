@@ -1,8 +1,9 @@
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.net.*;
 import java.util.Date;
 import java.util.Optional;
+
+//NOTE: start sever from current directory for files to load properly
 
 class Serve extends Thread
 {
@@ -58,20 +59,18 @@ class Serve extends Thread
         FileInputStream file;
 
         try {
-            file = new FileInputStream(new File(System.getProperty("user.dir") + "/java-course/task-6/HTTP/ServerHTTP/src/" + fileName));
+            file = new FileInputStream(new File(System.getProperty("user.dir") + "/" + fileName));
         }
         catch (FileNotFoundException e) {
             try {
-                file = new FileInputStream(new File(System.getProperty("user.dir") + "/java-course/task-6/HTTP/ServerHTTP/src/404.html"));
+                file = new FileInputStream(new File(System.getProperty("user.dir") + "/404.html"));
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
             code = "HTTP/1.0 404 FileNotFound\r\n";
         }
 
-        byte[] buf;
-        buf = new byte[1024];
-        int n = 0;
+
 
         int contentLength = 0;
         try {
@@ -99,9 +98,14 @@ class Serve extends Thread
             outp.writeBytes("Content-Length: " + contentLength + "\r\n");
             outp.writeBytes("\r\n");
 
+            byte[] buf;
+            buf = new byte[1024];
+            int n = 0;
+            
+            //przekazywanie danych za pomocą tablicy buforowej
             while ((n = file.read(buf)) != -1)
             {
-                outp.write(buf);
+                outp.write(buf, 0, n);
             }
         }
         else
@@ -109,11 +113,6 @@ class Serve extends Thread
             outp.writeBytes("HTTP/1.1 501 Not supported.\r\n");
         }
 
-            /*while (inp.ready())
-            {
-                System.out.println(request);
-                request = inp.readLine();
-            }*/
 
         //zamykanie strumieni
         inp.close();
