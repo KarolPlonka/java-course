@@ -7,8 +7,9 @@ import java.lang.Math;
 public class Kalk implements ActionListener
 {
    JTextField t1;
-   JButton b1;
-   JButton bplus;
+
+   JButton badd;
+   JButton bsub;
    JButton brow;
    JButton bdiv;
    JButton bmul;
@@ -16,6 +17,9 @@ public class Kalk implements ActionListener
    JButton bsqrt;
    JButton bproc;
    JButton bdot;
+
+   JButton bclr;
+
    JButton bMA;
    JButton bMC;
    JButton bMR;
@@ -53,21 +57,28 @@ public class Kalk implements ActionListener
       Object target = e.getSource();
                       
       //handle digits buttons
-      if (((JButton)target).getToolTipText().equals("digit"))
+      if(((JButton)target).getClientProperty("type").equals("digit"))   
       {
          System.out.println(((JButton)target).getText());                                      
          t1.setText(t1.getText()+((JButton)target).getText()); 
          t1.requestFocus();  
-      }                                                    
+      }                                                     
+ 
+      else if(target==bclr)                        
+      {                                                   
+         t1.setText("");                       
+         t1.requestFocus();                                    
+      }                                                   
  
       else if(target==bdot)                      
       {    
+         System.out.println(".");   
          t1.setText(t1.getText() + "."); 
          t1.requestFocus();                                  
       }    
       
-      //handle opperators +,-,*,^,... 
-      else if(((JButton)target).getToolTipText().equals("opp"))                                   
+      //handle opperators +,-,*,^,%
+      else if(((JButton)target).getClientProperty("type").equals("opp"))                                   
       {                                                                 
          x=Double.parseDouble(t1.getText());                       
          opp = ((JButton)target).getText();
@@ -85,7 +96,7 @@ public class Kalk implements ActionListener
          t1.requestFocus();                                       
       }                                                   
  
-      else if(((JButton)target).getToolTipText().equals("Memory"))                         
+      else if(((JButton)target).getClientProperty("type").equals("memory"))                        
       {    
          if(((JButton)target).getText().equals("M+")){
             mem = Double.parseDouble(t1.getText());
@@ -144,8 +155,8 @@ public class Kalk implements ActionListener
       //set up digits buttons
       for (int i = 0; i < 10; i++) {
          DigitsButtons[i].addActionListener(this);                                               
-         DigitsButtons[i].setFocusable(false);                                              
-         DigitsButtons[i].setToolTipText("digit");                                                  
+         DigitsButtons[i].setFocusable(false);  
+         DigitsButtons[i].putClientProperty("type", "digit");                                                  
          gbc.gridx = i%3;                                                              
          gbc.gridy = i/3 + 1;                                                              
          gbc.gridwidth=1;                                                          
@@ -154,29 +165,29 @@ public class Kalk implements ActionListener
          gbc.insets=new Insets(5,5,0,0);                                           
          gbl.setConstraints(DigitsButtons[i],gbc);
          c.add(DigitsButtons[i]);
-      }
+      }                                                     
  
-      
-                                                                  
  
-      bplus=new JButton("+");                                                   
-      bplus.addActionListener(this);                                            
-      bplus.setFocusable(false);                                                
-      bplus.setToolTipText("opp");                                        
-      gbc.gridx=0;                                                              
-      gbc.gridy=5;                                                              
+      bclr=new JButton("C");                                                    
+      bclr.addActionListener(this);                                             
+      bclr.setFocusable(false);                                                 
+      bclr.setToolTipText("Clear");    
+      bclr.putClientProperty("type", "clear");                               
+      gbc.gridx=2;                                                              
+      gbc.gridy=4;                                                              
       gbc.gridwidth=1;                                                          
       gbc.ipadx=0;                                                             
       gbc.ipady=0;                                                              
       gbc.insets=new Insets(5,5,0,0);                                           
-      gbl.setConstraints(bplus,gbc);                                            
-      c.add(bplus);                                                             
+      gbl.setConstraints(bclr,gbc);                                             
+      c.add(bclr);                                                         
  
  
       brow=new JButton("=");                                                    
       brow.addActionListener(this);                                             
       brow.setFocusable(false);                                                 
-      brow.setToolTipText("wykonaj działanie");                                 
+      brow.setToolTipText("wykonaj działanie");   
+      brow.putClientProperty("type", "row");                                
       gbc.gridx=1;                                                              
       gbc.gridy=5;                                                              
       gbc.gridwidth=1;                                                          
@@ -184,13 +195,53 @@ public class Kalk implements ActionListener
       gbc.ipady=0;                                                              
       gbc.insets=new Insets(5,5,0,0);                                           
       gbl.setConstraints(brow,gbc);                                             
-      c.add(brow);                                                            
+      c.add(brow);                                                          
+                                                                  
  
+      badd=new JButton("+");                                                   
+      badd.addActionListener(this);                                            
+      badd.setFocusable(false);
+      badd.putClientProperty("type", "opp");                                     
+      gbc.gridx=0;                                                              
+      gbc.gridy=5;                                                              
+      gbc.gridwidth=1;                                                          
+      gbc.ipadx=0;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(badd,gbc);                                            
+      c.add(badd);                                                         
+                                                                  
+ 
+      bsub=new JButton("-");                                                   
+      bsub.addActionListener(this);                                            
+      bsub.setFocusable(false);
+      bsub.putClientProperty("type", "opp");                                     
+      gbc.gridx=1;                                                              
+      gbc.gridy=6;                                                              
+      gbc.gridwidth=1;                                                          
+      gbc.ipadx=0;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(bsub,gbc);                                            
+      c.add(bsub);   
+ 
+      bmul=new JButton("*");                                                    
+      bmul.addActionListener(this);                                             
+      bmul.setFocusable(false);                                                 
+      bmul.putClientProperty("type", "opp");                                     
+      gbc.gridx=0;                                                              
+      gbc.gridy=6;                                                              
+      gbc.gridwidth=1;                                                          
+      gbc.ipadx=0;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(bmul,gbc);                                             
+      c.add(bmul);    
  
       bdiv=new JButton("/");                                                    
       bdiv.addActionListener(this);                                             
       bdiv.setFocusable(false);                                                 
-      bdiv.setToolTipText("opp");                                 
+      bdiv.putClientProperty("type", "opp");                                     
       gbc.gridx=2;                                                              
       gbc.gridy=5;                                                              
       gbc.gridwidth=1;                                                          
@@ -201,24 +252,10 @@ public class Kalk implements ActionListener
       c.add(bdiv);
  
  
-      bmul=new JButton("*");                                                    
-      bmul.addActionListener(this);                                             
-      bmul.setFocusable(false);                                                 
-      bmul.setToolTipText("opp");                                 
-      gbc.gridx=0;                                                              
-      gbc.gridy=6;                                                              
-      gbc.gridwidth=1;                                                          
-      gbc.ipadx=0;                                                             
-      gbc.ipady=0;                                                              
-      gbc.insets=new Insets(5,5,0,0);                                           
-      gbl.setConstraints(bmul,gbc);                                             
-      c.add(bmul);
- 
- 
       bpow=new JButton("^");                                                    
       bpow.addActionListener(this);                                             
       bpow.setFocusable(false);                                                 
-      bpow.setToolTipText("opp");                                 
+      bpow.putClientProperty("type", "opp");                                     
       gbc.gridx=2;                                                              
       gbc.gridy=6;                                                              
       gbc.gridwidth=1;                                                          
@@ -231,8 +268,8 @@ public class Kalk implements ActionListener
  
       bsqrt=new JButton("sqrt");                                                    
       bsqrt.addActionListener(this);                                             
-      bsqrt.setFocusable(false);                                                 
-      bsqrt.setToolTipText("sqrt");                                 
+      bsqrt.setFocusable(false);                              
+      bsqrt.putClientProperty("type", "sqrt");                                                        
       gbc.gridx=0;                                                              
       gbc.gridy=7;                                                              
       gbc.gridwidth=1;                                                          
@@ -244,8 +281,8 @@ public class Kalk implements ActionListener
  
       bproc=new JButton("%");                                                    
       bproc.addActionListener(this);                                             
-      bproc.setFocusable(false);                                                 
-      bproc.setToolTipText("opp");                                 
+      bproc.setFocusable(false);                                               
+      bproc.putClientProperty("type", "opp");                                       
       gbc.gridx=1;                                                              
       gbc.gridy=7;                                                              
       gbc.gridwidth=1;                                                          
@@ -257,8 +294,8 @@ public class Kalk implements ActionListener
  
       bdot=new JButton(".");                                                    
       bdot.addActionListener(this);                                             
-      bdot.setFocusable(false);                                                 
-      bdot.setToolTipText(".");                                 
+      bdot.setFocusable(false);                                  
+      bdot.putClientProperty("type", "dot");                               
       gbc.gridx=2;                                                              
       gbc.gridy=7;                                                              
       gbc.gridwidth=1;                                                          
@@ -270,8 +307,8 @@ public class Kalk implements ActionListener
  
       bMA=new JButton("M+");                                                    
       bMA.addActionListener(this);                                             
-      bMA.setFocusable(false);                                                 
-      bMA.setToolTipText("Memory");                                 
+      bMA.setFocusable(false);                                     
+      bMA.putClientProperty("type", "memory");                               
       gbc.gridx=0;                                                              
       gbc.gridy=8;                                                              
       gbc.gridwidth=1;                                                          
@@ -283,8 +320,8 @@ public class Kalk implements ActionListener
  
       bMC=new JButton("MC");                                                    
       bMC.addActionListener(this);                                             
-      bMC.setFocusable(false);                                                 
-      bMC.setToolTipText("Memory");                                 
+      bMC.setFocusable(false);                                    
+      bMC.putClientProperty("type", "memory");                                 
       gbc.gridx=1;                                                              
       gbc.gridy=8;                                                              
       gbc.gridwidth=1;                                                          
@@ -296,8 +333,8 @@ public class Kalk implements ActionListener
  
       bMR=new JButton("MR");                                                    
       bMR.addActionListener(this);                                             
-      bMR.setFocusable(false);                                                 
-      bMR.setToolTipText("Memory");                                 
+      bMR.setFocusable(false);                                   
+      bMR.putClientProperty("type", "memory");                                 
       gbc.gridx=2;                                                              
       gbc.gridy=8;                                                              
       gbc.gridwidth=1;                                                          
