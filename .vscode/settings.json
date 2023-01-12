@@ -1,8 +1,9 @@
 {
     "java.project.sourcePaths": [
-        "task-5\\comunicator\\src",
-        "task-5\\duplex\\src",
-        "task-6\\HTTP\\src"
+        "task-6/HTTP/src",
+        "task-5/duplex/src",
+        "task-5/comunicator/src",
+        "calc/src"
     ],
     "java.debug.settings.onBuildFailureProceed": true
 }
