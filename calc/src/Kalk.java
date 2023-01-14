@@ -3,11 +3,17 @@ import java.awt.event.*;
 import java.awt.*;
 import java.lang.String;
 import java.lang.Math;
- 
-public class Kalk implements ActionListener
+import java.awt.event.KeyListener;
+import java.io.*;
+import java.util.Date;
+
+
+
+
+public class Kalk implements ActionListener, KeyListener
 {
    JTextField t1;
-
+   
    JButton badd;
    JButton bsub;
    JButton brow;
@@ -17,9 +23,9 @@ public class Kalk implements ActionListener
    JButton bsqrt;
    JButton bproc;
    JButton bdot;
-
+   
    JButton bclr;
-
+   
    JButton bMA;
    JButton bMC;
    JButton bMR;
@@ -39,7 +45,16 @@ public class Kalk implements ActionListener
    
    double x,y,outcome,mem;
    boolean isMemStored;
-   String opp; 
+   String opp;
+   
+   //file for logs
+   FileWriter file;
+   BufferedWriter  output;
+   
+   public static String sqrt_symbol = "\u221A";
+   
+   String log;
+   Date date;
 
    public double calculate(double x, double y, String opp){
       if      (opp.equals("+"))     {return x + y;}
@@ -50,16 +65,26 @@ public class Kalk implements ActionListener
       else if (opp.equals("%"))     {return x * y / 100;}
 
       else {return 0.0;}
-   }    
+   }
+
+   public void keyPressed(KeyEvent ke) {}
+   public void keyReleased(KeyEvent ke){};
+   
+   @Override
+   public void keyTyped(KeyEvent ke) {
+      if (Character.isDigit(ke.getKeyChar())){
+         t1.setText(t1.getText() + ke.getKeyChar());
+      }
+   }
  
+   @Override
    public void actionPerformed(ActionEvent e)                  
    {                                                           
       Object target = e.getSource();
                       
       //handle digits buttons
       if(((JButton)target).getClientProperty("type").equals("digit"))   
-      {
-         System.out.println(((JButton)target).getText());                                      
+      {                                  
          t1.setText(t1.getText()+((JButton)target).getText()); 
          t1.requestFocus();  
       }                                                     
@@ -71,34 +96,49 @@ public class Kalk implements ActionListener
       }                                                   
  
       else if(target==bdot)                      
-      {    
-         System.out.println(".");   
+      {     
          t1.setText(t1.getText() + "."); 
          t1.requestFocus();                                  
       }    
       
       //handle opperators +,-,*,^,%
-      else if(((JButton)target).getClientProperty("type").equals("opp"))                                   
+      else if(
+         ((JButton)target).getClientProperty("type").equals("opp") &&
+         t1.getText().equals("") == false
+      )                                   
       {                                                                 
          x=Double.parseDouble(t1.getText());                       
          opp = ((JButton)target).getText();
-         System.out.println(((JButton)target).getText());    
          t1.setText("");                                       
          t1.requestFocus();                                    
       }
                                                           
       //sqrt
-      else if(target==bsqrt)                      
-      {    
-         //System.out.println("SQRT");                                                
-         outcome = Math.sqrt(Double.parseDouble(t1.getText()));                                                    
+      else if(
+         target==bsqrt &&
+         t1.getText().equals("") == false
+      )                      
+      {                                                 
+         outcome = Math.sqrt(Double.parseDouble(t1.getText())); 
+         
+         date = new Date();
+         String log = date.toString() + "\t" + "square root of " + t1.getText() + " = " + Double.toString(outcome) + "\n";
+         try {
+            output.append(log);
+            output.flush();
+         } catch (Exception err) {err.printStackTrace();}     
+                                                            
          t1.setText(Double.toString(outcome));                       
-         t1.requestFocus();                                       
+         t1.requestFocus();                                  
       }                                                   
  
       else if(((JButton)target).getClientProperty("type").equals("memory"))                        
       {    
-         if(((JButton)target).getText().equals("M+")){
+         if(
+            ((JButton)target).getText().equals("M+") &&
+            t1.getText().equals("") == false
+         )
+         {
             mem = Double.parseDouble(t1.getText());
             isMemStored = true;
          }
@@ -112,23 +152,35 @@ public class Kalk implements ActionListener
          }                       
       }                                                    
  
-      else if(target==brow||target==t1)                        
-      {    
-         //System.out.println("row");    
+      else if(
+         target==brow &&
+         t1.getText().equals("") == false
+      )                        
+      {  
          y=Double.parseDouble(t1.getText());                                             
          outcome = calculate(x, y, opp);                                                    
          t1.setText(Double.toString(outcome));                       
-         t1.requestFocus();                                    
-      }                                                        
+         t1.requestFocus();   
+
+         date = new Date();
+         String log = date.toString() + "\t" + Double.toString(x) + " " + opp + " " + Double.toString(y) + " = " + Double.toString(outcome) + "\n";
+         try {
+            output.append(log);
+            output.flush();
+         } catch (Exception err) {err.printStackTrace();}
+      }
+      
+      
    }                                                           
  
    void init()                                                                   
-   {                                                                            
-      //try                                                                     
-      //{                                                                       
-      //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());    
-      //}                                                                       
-      //catch(Exception e){}                                                    
+   {
+      //file for logs   
+      try {
+         file = new FileWriter("log.txt");
+         output = new BufferedWriter(file);
+      } catch (Exception ex) {ex.printStackTrace();}                                                                 
+                                                  
  
       JFrame f=new JFrame();                                                    
       Container c=f.getContentPane();                                           
@@ -136,13 +188,15 @@ public class Kalk implements ActionListener
       GridBagLayout gbl=new GridBagLayout();                                    
       GridBagConstraints gbc=new GridBagConstraints();                          
       gbc.fill=GridBagConstraints.HORIZONTAL;                                   
-      c.setLayout(gbl);                                                         
+      c.setLayout(gbl);                                               
  
  
  
       t1=new JTextField(15);                                                    
       t1.addActionListener(this);                                               
       t1.setHorizontalAlignment(JTextField.RIGHT);                              
+      t1.setEditable(false);
+      t1.addKeyListener(this);   
       gbc.gridx=0;                                                              
       gbc.gridy=0;                                                              
       gbc.gridwidth=5;                                                          
@@ -266,7 +320,7 @@ public class Kalk implements ActionListener
       c.add(bpow);
  
  
-      bsqrt=new JButton("sqrt");                                                    
+      bsqrt=new JButton(sqrt_symbol);                                                    
       bsqrt.addActionListener(this);                                             
       bsqrt.setFocusable(false);                              
       bsqrt.putClientProperty("type", "sqrt");                                                        
@@ -368,3 +422,4 @@ public class Kalk implements ActionListener
       });                                          
    }                                               
 }
+
