@@ -68,13 +68,29 @@ class Plansza extends JPanel
       g2d.drawRoundRect(135, 155, 3, 10, 5, 5);
       g2d.drawRoundRect(135, 175, 3, 25, 5, 5);
 
+
+      Graphics2D triangle=(Graphics2D)g2d.create();
+
       // Overlapping triangles without fill
-      g2d.setColor(Color.RED);
-      g2d.setStroke(new BasicStroke(5));
-      //g2d.setTransform(AffineTransform.getScaleInstance(1.75, 1.75));
-      g2d.drawPolygon(new int[] { 250, 305, 250}, new int[] { 475, 475, 525 }, 3);
-      g2d.drawPolygon(new int[] { 270, 370, 270 }, new int[] { 500, 500, 550 }, 3);
-      
+      var x = new int[] { 60, 135, 200 };
+      var y = new int[] { 125, 50, 125 };
+
+      var thinStroke = new BasicStroke( 2.25f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+
+      triangle.setStroke(thinStroke);
+      triangle.drawPolygon(x, y, 3);
+
+      var scX = 1.75;
+      var scY = 1.75;
+
+      var transform = AffineTransform.getScaleInstance(scX, scY);
+      var thickStroke = new BasicStroke( 3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+
+      triangle.setStroke(thickStroke);
+      triangle.setTransform(transform);
+      triangle.translate(-20, -15);
+      triangle.drawPolygon(x, y, 3);
+
 
       //image eclipse
       String plik="plik.jpg";
