@@ -68,20 +68,20 @@ class Plansza extends JPanel
       g2d.drawRoundRect(135, 155, 3, 10, 5, 5);
       g2d.drawRoundRect(135, 175, 3, 25, 5, 5);
 
-
       Graphics2D triangle=(Graphics2D)g2d.create();
 
       // Overlapping triangles without fill
-      var x = new int[] { 60, 135, 200 };
-      var y = new int[] { 125, 50, 125 };
+      var x = new int[] { 200, 300, 350 };
+      var y = new int[] { 520, 490, 520 };
 
       var thinStroke = new BasicStroke( 2.25f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
 
       triangle.setStroke(thinStroke);
+      triangle.rotate(Math.toRadians(30), 275, 510);
       triangle.drawPolygon(x, y, 3);
 
-      var scX = 1.75;
-      var scY = 1.75;
+      var scX = 1.05;
+      var scY = 1.05;
 
       var transform = AffineTransform.getScaleInstance(scX, scY);
       var thickStroke = new BasicStroke( 3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
@@ -89,7 +89,9 @@ class Plansza extends JPanel
       triangle.setStroke(thickStroke);
       triangle.setTransform(transform);
       triangle.translate(-20, -15);
+      triangle.rotate(Math.toRadians(30), 275, 510);
       triangle.drawPolygon(x, y, 3);
+
 
 
       //image eclipse
@@ -103,10 +105,6 @@ class Plansza extends JPanel
         g2d.drawImage(img, 20, 200, 150, 120, null);
         g2d.dispose();
       } catch(IOException e){System.err.println("Problem z plikiem");}
-      
-
-
-      
    } 
 }
 
