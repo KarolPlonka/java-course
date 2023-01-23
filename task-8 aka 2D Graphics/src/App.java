@@ -74,22 +74,21 @@ class Plansza extends JPanel
       var x = new int[] { 200, 300, 350 };
       var y = new int[] { 520, 490, 520 };
 
-      var thinStroke = new BasicStroke( 2.25f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+      var thinStroke = new BasicStroke( 3.f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
 
       triangle.setStroke(thinStroke);
-      triangle.rotate(Math.toRadians(30), 275, 510);
       triangle.drawPolygon(x, y, 3);
-
-      var scX = 1.05;
-      var scY = 1.05;
-
+      
+      var scX = 1.06;
+      var scY = 1.06;
+      
       var transform = AffineTransform.getScaleInstance(scX, scY);
-      var thickStroke = new BasicStroke( 3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+      var thickStroke = new BasicStroke( 5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
 
       triangle.setStroke(thickStroke);
       triangle.setTransform(transform);
       triangle.translate(-20, -15);
-      triangle.rotate(Math.toRadians(30), 275, 510);
+      triangle.rotate(Math.toRadians(-5), 275, 510);
       triangle.drawPolygon(x, y, 3);
 
 
