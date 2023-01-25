@@ -5,7 +5,7 @@ import java.lang.String;
 import java.lang.Math;
 import java.awt.event.KeyListener;
 import java.io.*;
-import java.util.Date;
+import java.util.*;
 
 
 
@@ -24,6 +24,7 @@ public class Kalk implements ActionListener, KeyListener
    JButton bproc;
    JButton bdot;
    
+   JButton bundo;
    JButton bclr;
    
    JButton bMA;
@@ -49,7 +50,9 @@ public class Kalk implements ActionListener, KeyListener
    
    //file for logs
    FileWriter file;
-   BufferedWriter  output;
+   BufferedWriter output;
+
+   Stack<Double> history = new Stack<Double>();
    
    public static String sqrt_symbol = "\u221A";
    
@@ -92,10 +95,15 @@ public class Kalk implements ActionListener, KeyListener
       else if(target==bclr)                        
       {                                                   
          t1.setText("");                       
-         t1.requestFocus();                                    
+         t1.requestFocus(); 
+         
+         opp = null;
       }                                                   
  
-      else if(target==bdot)                      
+      else if(
+         target==bdot &&
+         t1.getText().contains(".") == false
+      )                      
       {     
          t1.setText(t1.getText() + "."); 
          t1.requestFocus();                                  
@@ -104,10 +112,13 @@ public class Kalk implements ActionListener, KeyListener
       //handle opperators +,-,*,^,%
       else if(
          ((JButton)target).getClientProperty("type").equals("opp") &&
+         opp == null &&
          t1.getText().equals("") == false
       )                                   
       {                                                                 
-         x=Double.parseDouble(t1.getText());                       
+         x=Double.parseDouble(t1.getText());
+         history.push(x);
+         history.push(0.0);                                                                         
          opp = ((JButton)target).getText();
          t1.setText("");                                       
          t1.requestFocus();                                    
@@ -119,7 +130,10 @@ public class Kalk implements ActionListener, KeyListener
          t1.getText().equals("") == false
       )                      
       {                                                 
-         outcome = Math.sqrt(Double.parseDouble(t1.getText())); 
+         outcome = Math.sqrt(Double.parseDouble(t1.getText()));
+         
+         history.push(Double.parseDouble(t1.getText()));                    
+         history.push(outcome);       
          
          date = new Date();
          String log = date.toString() + "\t" + "square root of " + t1.getText() + " = " + Double.toString(outcome) + "\n";
@@ -154,20 +168,36 @@ public class Kalk implements ActionListener, KeyListener
  
       else if(
          target==brow &&
+         opp != null &&
          t1.getText().equals("") == false
       )                        
-      {  
+      {
          y=Double.parseDouble(t1.getText());                                             
-         outcome = calculate(x, y, opp);                                                    
-         t1.setText(Double.toString(outcome));                       
+         outcome = calculate(x, y, opp);  
+
+         t1.setText(Double.toString(outcome));             
          t1.requestFocus();   
+
+         history.push(y);                    
+         history.push(outcome);          
 
          date = new Date();
          String log = date.toString() + "\t" + Double.toString(x) + " " + opp + " " + Double.toString(y) + " = " + Double.toString(outcome) + "\n";
+         opp = null;
          try {
             output.append(log);
             output.flush();
          } catch (Exception err) {err.printStackTrace();}
+      }                
+
+      else if(
+         target==bundo &&
+         history.empty() == false
+      )                        
+      {
+         history.pop();
+         t1.setText(Double.toString(history.pop()));
+         opp = null;                                  
       }
       
       
@@ -219,7 +249,21 @@ public class Kalk implements ActionListener, KeyListener
          gbc.insets=new Insets(5,5,0,0);                                           
          gbl.setConstraints(DigitsButtons[i],gbc);
          c.add(DigitsButtons[i]);
-      }                                                     
+      }                                                    
+ 
+      bundo=new JButton("<");                                                    
+      bundo.addActionListener(this);                                             
+      bundo.setFocusable(false);                                                 
+      bundo.setToolTipText("undo");    
+      bundo.putClientProperty("type", "undo");                               
+      gbc.gridx=1;                                                              
+      gbc.gridy=4;                                                              
+      gbc.gridwidth=1;                                                          
+      gbc.ipadx=0;                                                             
+      gbc.ipady=0;                                                              
+      gbc.insets=new Insets(5,5,0,0);                                           
+      gbl.setConstraints(bundo,gbc);                                             
+      c.add(bundo);                                                      
  
  
       bclr=new JButton("C");                                                    
