@@ -115,7 +115,7 @@ public class Kalk implements ActionListener, KeyListener
          opp == null &&
          t1.getText().equals("") == false
       )                                   
-      {                                                                 
+      {                                                           
          x=Double.parseDouble(t1.getText());
          history.push(x);
          history.push(0.0);                                                                         
@@ -129,10 +129,26 @@ public class Kalk implements ActionListener, KeyListener
          target==bsqrt &&
          t1.getText().equals("") == false
       )                      
-      {                                                 
-         outcome = Math.sqrt(Double.parseDouble(t1.getText()));
+      {
+         y = Double.parseDouble(t1.getText());
+
+         if ( y < 0){
+            
+            date = new Date();
+            String log = date.toString() + "\t" + "square root of " + t1.getText() + " ---> Pierwiastek z liczby ujemnej! \n";
+            opp = null;
+            try {
+               output.append(log);
+               output.flush();
+            } catch (Exception err) {err.printStackTrace();}
+            
+            t1.setText("Pierwiastek z liczby ujemnej!");
+            return;
+         }
+
+         outcome = Math.sqrt(y);
          
-         history.push(Double.parseDouble(t1.getText()));                    
+         history.push(y);                    
          history.push(outcome);       
          
          date = new Date();
@@ -143,7 +159,8 @@ public class Kalk implements ActionListener, KeyListener
          } catch (Exception err) {err.printStackTrace();}     
                                                             
          t1.setText(Double.toString(outcome));                       
-         t1.requestFocus();                                  
+         t1.requestFocus(); 
+   
       }                                                   
  
       else if(((JButton)target).getClientProperty("type").equals("memory"))                        
@@ -172,7 +189,23 @@ public class Kalk implements ActionListener, KeyListener
          t1.getText().equals("") == false
       )                        
       {
-         y=Double.parseDouble(t1.getText());                                             
+
+         y=Double.parseDouble(t1.getText());
+
+         if ( opp.equals("/") && y == 0){
+            t1.setText("Dzielenie przez zero!");
+
+            date = new Date();
+            String log = date.toString() + "\t" + Double.toString(x) + " / 0 ---> Dzielenie przez zero! \n";
+            opp = null;
+            try {
+               output.append(log);
+               output.flush();
+            } catch (Exception err) {err.printStackTrace();}
+
+            return;
+         }
+
          outcome = calculate(x, y, opp);  
 
          t1.setText(Double.toString(outcome));             
