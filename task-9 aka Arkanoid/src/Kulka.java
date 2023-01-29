@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.geom.*;
+import javax.swing.*;
 import java.lang.Math;
 
 class Kulka extends Ellipse2D.Float
@@ -8,10 +9,13 @@ class Kulka extends Ellipse2D.Float
    Belka b;
    Cegielka[] c;
    int c_amount;
-
+   JTextField score_display;
+   int score;
+   boolean isGameWon = false;
+    
    int dx, dy;
  
-   Kulka(Plansza p,int x,int y,int dx,int dy, Belka b, Cegielka[] c, int c_amount) 
+   Kulka(Plansza p,int x,int y,int dx,int dy, Belka b, Cegielka[] c, int c_amount, JTextField score) 
    {                                          
       this.x=x;                               
       this.y=y;                               
@@ -24,7 +28,9 @@ class Kulka extends Ellipse2D.Float
       this.c_amount=c_amount;
       
       this.dx=dx;                             
-      this.dy=dy;                             
+      this.dy=dy;
+
+      this.score_display = score;
    }
    
    void checkCollisionBelka(){
@@ -60,31 +66,47 @@ class Kulka extends Ellipse2D.Float
             else this.dx=-this.dx;
             
             c[i].setVisiblity(false);
+
+            score+=1;
+
+            //check if won
+            if (score == c_amount){
+               score_display.setText("You won. Score: " + Integer.toString(score)); 
+               isGameWon = true;
+               p.repaint();
+               return;
+            }
+
+            score_display.setText("Score: " + Integer.toString(score));
+
             p.repaint();
             //System.out.println("Hit cegla");
          }
       }
-   }                                            
+   }
  
-   void nextKrok()                                        
+   boolean nextKrok()                                        
    {                                                     
       x+=this.dx;                                             
-      y+=this.dy;                                             
+      y+=this.dy;
+      
  
       if(getMinX()<0 || getMaxX()>p.getWidth())  this.dx=-this.dx; 
-      if(getMinY()<0 || getMaxY()>p.getHeight()) this.dy=-this.dy;
+      if(getMinY()<30) this.dy=-this.dy;
+      
+      if(getMaxY()>361){
+         score_display.setText("You lost. Score: " + Integer.toString(score)); 
+         return false;
+      }
 
       this.checkCollisionBelka();
       this.checkCollisionCegielki();
 
-      
-
-      //System.out.println("this.dx: "+ this.dx);
-      //System.out.println("this.dy: "+ this.dy);
-
-
+      if(this.isGameWon) return false;
  
       p.repaint(); 
-      Toolkit.getDefaultToolkit().sync();                                      
-   }                                                     
+      Toolkit.getDefaultToolkit().sync();
+      
+      return true;
+   }
 }

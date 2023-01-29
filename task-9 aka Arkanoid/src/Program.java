@@ -8,16 +8,19 @@ public class Program
       {                                                        
          public void run()                                     
          {                                                     
-            Plansza p;                                         
-            p=new Plansza();                                   
- 
+            Plansza p;  
+                                               
+            p=new Plansza(); 
+            
+            
             JFrame jf=new JFrame();                            
             jf.add(p);                                         
+             
  
-            jf.setTitle("Test grafiki");                       
-            jf.setSize(400,370);                               
+            jf.setTitle("Arkanoid");                       
+            jf.setSize(400,400);                               
             jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-            jf.setVisible(true);                               
+            jf.setVisible(true);       
          }                                                     
       });                                                      
    }                                                           

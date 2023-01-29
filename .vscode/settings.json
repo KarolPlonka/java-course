@@ -1,11 +1,12 @@
 {
     "java.project.sourcePaths": [
         "task-8 aka 2D Graphics/src",
+        "task-7 aka GUI calc/src",
         "task-6/HTTP/src",
         "task-5/duplex/src",
         "task-5/comunicator/src",
         "calc/src",
-        "task-7 aka GUI calc/src"
+        "task-9 aka Arkanoid/src"
     ],
     "java.debug.settings.onBuildFailureProceed": true
 }

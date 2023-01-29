@@ -1,6 +1,7 @@
 class SilnikKulki extends Thread
 {
    Kulka a;
+   boolean gameInProgress = true;
  
    SilnikKulki(Kulka a) 
    {                    
@@ -14,7 +15,8 @@ class SilnikKulki extends Thread
       {                               
          while(true)                  
          {                            
-            a.nextKrok();             
+            gameInProgress = a.nextKrok();    
+            if(gameInProgress == false) return;         
             sleep(15);                
          }                            
       }                               
